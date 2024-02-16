@@ -8,9 +8,6 @@ RSpec.describe GeolocationProviders::IpStackService do
     let(:incoming_value) { '134.201.250.255' }
 
     context 'when valid' do
-      let(:ipstack_response_body) do
-        File.read('spec/fixtures/ipstack/success_response.txt')
-      end
       let(:expected_response) do
         {
           ip: '134.201.250.155',
@@ -30,8 +27,8 @@ RSpec.describe GeolocationProviders::IpStackService do
       end
 
       before do
-        stub_request(:get, %r{#{ENV.fetch('IPSTACK_URL', nil)}/#{incoming_value}})
-          .to_return(stub_response(ipstack_response_body))
+        stub_geolocation_service(:ipstack, :get, "/#{incoming_value}")
+          .to_return(stub_geolocation_response(:ipstack, 'success_response'))
       end
 
       it 'returns modified data' do
@@ -47,25 +44,21 @@ RSpec.describe GeolocationProviders::IpStackService do
       end
 
       before do
-        stub_request(:get, %r{#{ENV.fetch('IPSTACK_URL', nil)}/#{incoming_value}})
+        stub_geolocation_service(:ipstack, :get, "/#{incoming_value}")
           .to_return(stub_ipstack_response)
       end
 
-      let(:stub_ipstack_response) do
-        stub_response(ipstack_response_body)
-      end
-
       context 'when missing API keys' do
-        let(:ipstack_response_body) do
-          File.read('spec/fixtures/ipstack/missing_api_key_response.txt')
+        let(:stub_ipstack_response) do
+          stub_geolocation_response(:ipstack, 'missing_api_key_response')
         end
 
         it_behaves_like 'should raise provider unavailable error'
       end
 
       context 'when record not found' do
-        let(:ipstack_response_body) do
-          File.read('spec/fixtures/ipstack/not_found_response.txt')
+        let(:stub_ipstack_response) do
+          stub_geolocation_response(:ipstack, 'not_found_response')
         end
 
         it 'raises an error' do
@@ -74,8 +67,8 @@ RSpec.describe GeolocationProviders::IpStackService do
       end
 
       context 'when invalid input' do
-        let(:ipstack_response_body) do
-          File.read('spec/fixtures/ipstack/invalid_fields_response.txt')
+        let(:stub_ipstack_response) do
+          stub_geolocation_response(:ipstack, 'invalid_fields_response')
         end
 
         it_behaves_like 'should raise invalid input error'

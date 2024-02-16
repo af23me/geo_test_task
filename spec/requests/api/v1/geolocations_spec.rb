@@ -47,14 +47,11 @@ RSpec.describe 'api/v1/geolocations' do
                },
                required: %w[geolocation]
 
-        let(:ipstack_response_body) do
-          File.read('spec/fixtures/ipstack/success_response.txt')
-        end
         let(:search_value) { '134.201.250.155' }
 
         before do
-          stub_request(:get, %r{#{ENV.fetch('IPSTACK_URL', nil)}/#{search_value}})
-            .to_return(stub_response(ipstack_response_body))
+          stub_geolocation_service(:ipstack, :get, "/#{search_value}")
+            .to_return(stub_geolocation_response(:ipstack, 'success_response'))
         end
 
         run_test!

@@ -64,7 +64,7 @@ module GeolocationProviders
     end
 
     def validate_remote_empty_values!
-      return unless REQUIRED_VALUES.any? { |i| remote_result[i].nil? }
+      return unless REQUIRED_VALUES.any? { |i| remote_result[i].blank? }
 
       log_invalid_response
       raise GeolocationService::IncompleteResult, I18n.t('errors.incomplete_result')

@@ -1,0 +1,15 @@
+{
+  "ip": "134.201.250.155",
+  "hostname": "",
+  "type": "ipv4",
+  "continent_code": "",
+  "continent_name": "",
+  "country_code": "",
+  "country_name": "",
+  "region_code": "",
+  "region_name": "",
+  "city": "",
+  "zip": "",
+  "latitude": 0.0,
+  "longitude": 0.0
+}

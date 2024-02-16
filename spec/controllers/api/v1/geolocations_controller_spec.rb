@@ -92,13 +92,9 @@ RSpec.describe Api::V1::GeolocationsController do
           }
         end
 
-        let(:ipstack_response_body) do
-          File.read('spec/fixtures/ipstack/success_response.txt')
-        end
-
         before do
-          stub_request(:get, %r{#{ENV.fetch('IPSTACK_URL', nil)}/#{search_value}})
-            .to_return(stub_response(ipstack_response_body))
+          stub_geolocation_service(:ipstack, :get, "/#{search_value}")
+            .to_return(stub_geolocation_response(:ipstack, 'success_response'))
         end
 
         it_behaves_like 'HTTP status ok'
@@ -173,8 +169,8 @@ RSpec.describe Api::V1::GeolocationsController do
         end
 
         before do
-          stub_request(:get, %r{#{ENV.fetch('IPSTACK_URL', nil)}/#{search_value}})
-            .to_return(stub_response(ipstack_response_body))
+          stub_geolocation_service(:ipstack, :get, "/#{search_value}")
+            .to_return(stub_geolocation_response(:ipstack, 'not_found_response'))
         end
 
         it 'has http status unprocessable_entity' do
@@ -190,13 +186,9 @@ RSpec.describe Api::V1::GeolocationsController do
       end
 
       context 'when remote service raise invalid params' do
-        let(:ipstack_response_body) do
-          File.read('spec/fixtures/ipstack/invalid_fields_response.txt')
-        end
-
         before do
-          stub_request(:get, %r{#{ENV.fetch('IPSTACK_URL', nil)}/#{search_value}})
-            .to_return(stub_response(ipstack_response_body))
+          stub_geolocation_service(:ipstack, :get, "/#{search_value}")
+            .to_return(stub_geolocation_response(:ipstack, 'invalid_fields_response'))
         end
 
         it 'has http status bad_request' do
@@ -207,13 +199,9 @@ RSpec.describe Api::V1::GeolocationsController do
       end
 
       context 'when remote service return partial response' do
-        let(:ipstack_response_body) do
-          { 'ip' => '134.201.250.455' }.to_json
-        end
-
         before do
-          stub_request(:get, %r{#{ENV.fetch('IPSTACK_URL', nil)}/#{search_value}})
-            .to_return(stub_response(ipstack_response_body))
+          stub_geolocation_service(:ipstack, :get, "/#{search_value}")
+            .to_return(stub_geolocation_response(:ipstack, 'partial_response'))
         end
 
         it 'has http status bad_request' do
@@ -229,13 +217,9 @@ RSpec.describe Api::V1::GeolocationsController do
       end
 
       context 'when remote service raise another error' do
-        let(:ipstack_response_body) do
-          File.read('spec/fixtures/ipstack/missing_api_key_response.txt')
-        end
-
         before do
-          stub_request(:get, %r{#{ENV.fetch('IPSTACK_URL', nil)}/#{search_value}})
-            .to_return(stub_response(ipstack_response_body))
+          stub_geolocation_service(:ipstack, :get, "/#{search_value}")
+            .to_return(stub_geolocation_response(:ipstack, 'missing_api_key_response'))
         end
 
         it 'has http status bad_request' do
