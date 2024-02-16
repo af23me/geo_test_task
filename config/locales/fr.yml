@@ -1,0 +1,9 @@
+fr:
+  errors:
+    client_not_passed: 'FR: Client not provided API key'
+    invalid_input: 'FR: Invalid input'
+    not_found: 'FR: Not found'
+    internal_error: 'FR: Internal error'
+    remote_resource_not_found: 'FR: Can not create geolocation due to missing information from provider'
+    duplicated_record: 'FR: Record already exist'
+    incomplete_result: 'FR: Incomplete result from service provider'

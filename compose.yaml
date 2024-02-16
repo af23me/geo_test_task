@@ -1,0 +1,29 @@
+services:
+  app:
+    build:
+      context: .
+      target: base
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - geo_test_task_pg15
+  geo_test_task_pg15:
+    container_name: geo_test_task_database
+    image: postgres:15.5-alpine3.19
+    command: postgres -p 5432 -c 'max_connections=200'
+    env_file: 
+      - .env.development
+    expose:
+      - "5432"
+    volumes:
+      - geo_test_task-localpg-data:/var/lib/postgresql15/data
+
+volumes:
+  geo_test_task-localpg-data:
+
+networks:
+  default:
+    name: geo_test_task
+    external: true

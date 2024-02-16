@@ -1,0 +1,137 @@
+---
+openapi: 3.0.1
+info:
+  title: GeoTestTask API
+  version: v1
+paths:
+  "/api/v1/geolocations":
+    post:
+      summary: create geolocation
+      description: Create geolocation
+      tags:
+      - Geolocation
+      parameters:
+      - name: X-Client-Api-Key
+        in: header
+        schema:
+          type: string
+          example: '100'
+        description: Client API key
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  geolocation:
+                    "$ref": "#/components/Geolocation"
+                required:
+                - geolocation
+        '400':
+          description: failure
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                geolocation:
+                  type: object
+                  properties:
+                    search_value:
+                      type: string
+              required:
+              - geolocation
+  "/api/v1/geolocations/search":
+    get:
+      summary: show geolocation
+      description: Update geolocation
+      tags:
+      - Geolocation
+      parameters:
+      - name: X-Client-Api-Key
+        in: header
+        schema:
+          type: string
+          example: '100'
+        description: Client API key
+      - name: search_value
+        in: query
+        description: Host or IP
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  geolocation:
+                    "$ref": "#/components/Geolocation"
+                required:
+                - geolocation
+        '400':
+          description: failure
+        '404':
+          description: not_found
+  "/api/v1/geolocations/destroy":
+    delete:
+      summary: destroy geolocation
+      description: Destroy
+      tags:
+      - Geolocation
+      parameters:
+      - name: X-Client-Api-Key
+        in: header
+        schema:
+          type: string
+          example: '100'
+        description: Client API key
+      - name: search_value
+        in: query
+        description: Host or IP
+        schema:
+          type: string
+      responses:
+        '204':
+          description: successful
+        '400':
+          description: failure
+        '404':
+          description: failure
+components:
+  Geolocation:
+    type: object
+    properties:
+      ip:
+        type: string
+      hostname:
+        type: string
+      ip_type:
+        type: string
+      continent_code:
+        type: string
+      continent_name:
+        type: string
+      country_code:
+        type: string
+      country_name:
+        type: string
+      region_code:
+        type: string
+      region_name:
+        type: string
+      city:
+        type: string
+      zip:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+servers:
+- url: http://localhost:3000

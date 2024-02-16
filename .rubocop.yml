@@ -1,0 +1,66 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - bin/**/*
+    - db/**/*
+    - system/**/*
+    - tmp/**/*
+    - vendor/**/*
+
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
+
+Style/Documentation:
+  Enabled: false
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_first_argument
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Metrics/AbcSize:
+  Max: 30
+
+Metrics/BlockLength:
+  CountAsOne: ['array', 'heredoc']
+  Max: 30
+
+Metrics/ClassLength:
+  CountAsOne: ['array', 'heredoc']
+
+Metrics/MethodLength:
+  CountAsOne: ['array', 'heredoc']
+  Max: 20
+
+RSpec/NestedGroups:
+  Max: 10
+
+RSpec/ExampleLength:
+  CountAsOne: ['array', 'heredoc']
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
+  Exclude:
+    - spec/requests/**/*
+
+# https://github.com/rswag/rswag/issues/138
+RSpec/EmptyExampleGroup:
+  Exclude:
+    - spec/requests/**/*
+RSpec/ScatteredSetup:
+  Exclude:
+    - spec/requests/**/*
+RSpec/VariableName:
+  Exclude:
+    - spec/requests/**/*
