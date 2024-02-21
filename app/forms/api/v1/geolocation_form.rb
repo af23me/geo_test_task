@@ -54,12 +54,9 @@ module Api
 
       # Service allow to configure Geolocation Provider
       def geolocation_service
-        return @geolocation_service if defined?(@geolocation_service)
-
-        geolocation_service_klass = GeolocationService
-        geolocation_service_klass.provider = :ipstack
-
-        @geolocation_service = geolocation_service_klass.new
+        @geolocation_service ||= GeolocationService.new(
+          provider: GeolocationProviders::IpStackService
+        )
       end
     end
   end

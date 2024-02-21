@@ -6,7 +6,7 @@ class GeolocationService
   ProviderUnavailable = Class.new(StandardError)
   IncompleteResult = Class.new(StandardError)
 
-  class_attribute :provider
+  attr_reader :provider
 
   class << self
     def search_key(input)
@@ -38,14 +38,12 @@ class GeolocationService
     end
   end
 
-  def search(input)
-    provider = case self.class.provider&.to_sym
-               when :ipstack
-                 GeolocationProviders::IpStackService.new(search_value: input)
-               else
-                 raise 'Invalid provider'
-               end
+  def initialize(provider:)
+    @provider = provider
+  end
 
-    provider.find_location!
+  def search(input)
+    service = provider.new(search_value: input)
+    service.find_location!
   end
 end

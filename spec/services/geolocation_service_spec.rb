@@ -108,9 +108,7 @@ RSpec.describe GeolocationService do
 
     context 'when provider defined' do
       let(:service) do
-        klass = described_class
-        klass.provider = :ipstack
-        klass.new
+        described_class.new(provider: GeolocationProviders::IpStackService)
       end
 
       let(:instance) { instance_double(GeolocationProviders::IpStackService) }
